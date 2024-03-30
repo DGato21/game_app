@@ -11,8 +11,8 @@ namespace Domain.Core
     public class TurtleGame : AGame, ITurtleGame
     {
         private readonly TurtleChallengeSettings configuration;
-        public GameState? gameState;
-        public Queue<ACommand>? commands;
+        public GameState gameState;
+        public Queue<ACommand> commands;
 
         public TurtleGame(TurtleChallengeSettings configuration)
         {
