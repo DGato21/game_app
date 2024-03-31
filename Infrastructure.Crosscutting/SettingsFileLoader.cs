@@ -2,14 +2,14 @@
 {
     public static class SettingsFileLoader
     {
-        public static IEnumerable<string> ReadSettingsFromTxt(string path)
+        public static string ReadSettingsFromTxt(string path)
         {
             if (!Path.Exists(path))
             {
                 throw new Exception($"Invalid path: {path}");
             }
 
-            IEnumerable<string> fileTxt = File.ReadLines(path);
+            string fileTxt = File.ReadAllText(path);
 
             return fileTxt;
         }

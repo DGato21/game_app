@@ -1,6 +1,6 @@
 ﻿namespace Domain.Core.Interfaces
 {
-    public interface ITurtleGame
+    public interface ITurtleGame : IGame
     {
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Domain.Entities.TurtleChallenge;
 
-namespace Infrastructure.Crosscutting.Factory
+namespace Domain.Core.Factory
 {
+    /// <summary>
+    /// Not Used
+    /// </summary>
     public class ElementFactory
     {
         public static AElement ElementFactoryCreator(string element, int positionX, int positionY, string? direction = null)

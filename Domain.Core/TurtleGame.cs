@@ -1,10 +1,12 @@
 ﻿using Domain.Core.Base;
+using Domain.Core.Factory;
 using Domain.Core.Interfaces;
 using Domain.Core.Validators;
 using Domain.Entities.TurtleChallenge;
 using Infrastructure.Crosscutting;
-using Infrastructure.Crosscutting.Factory;
 using Infrastructure.Crosscutting.Settings;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Domain.Core
 {
@@ -14,11 +16,21 @@ namespace Domain.Core
         public GameState gameState;
         public Queue<ACommand> commands;
 
-        public TurtleGame(TurtleChallengeSettings configuration)
+        public TurtleGame(IOptions<TurtleChallengeSettings> configuration)
         {
-            this.configuration = configuration;
+            this.configuration = configuration.Value;
             this.gameState = LoadGame();
             this.commands = LoadCommands();
+        }
+
+        public async override void Start()
+        {
+            if (this.commands.Any())
+            {
+                while (this.commands.Any()) { ExecuteCommand(); }
+            }
+
+            Console.WriteLine("Game End");
         }
 
         public void ExecuteCommand()
@@ -40,26 +52,30 @@ namespace Domain.Core
 
         private GameState LoadGame()
         {
-            IEnumerable<string> gamesettingsTxt = SettingsFileLoader.ReadSettingsFromTxt(
-                this.configuration.Configurations[TurtleChallengeSettings.GAME_SETTINGS_FILE_ID]);
+            string gamesettingsTxt = SettingsFileLoader.ReadSettingsFromTxt(
+                this.configuration.Configurations[TurtleChallengeSettings.GAME_SETTINGS_FILE_KEY]);
 
-            GameState gameState = null;
+            TurtleGameBoardSettings settings = JsonConvert.DeserializeObject<TurtleGameBoardSettings>(gamesettingsTxt);
+
+            GameState gameState = GameStateFactory.Create(settings);
 
             return gameState;
         }
 
         private Queue<ACommand> LoadCommands()
         {
-            IEnumerable<string> movesTxt = SettingsFileLoader.ReadSettingsFromTxt(
-                this.configuration.Configurations[TurtleChallengeSettings.MOVES_FILE_ID]);
+            string movesTxt = SettingsFileLoader.ReadSettingsFromTxt(
+                this.configuration.Configurations[TurtleChallengeSettings.MOVES_FILE_KEY]);
 
-            IEnumerable<ACommand> commandsToRead = movesTxt.Select(CommandFactory.CommandFactoryCreator);
+            MovesSettings settings = JsonConvert.DeserializeObject<MovesSettings>(movesTxt);
+
+            IEnumerable<ACommand> commandsToRead = settings.moves.Split(" ").Select(CommandFactory.CommandFactoryCreator);
+
+            if (this.commands == null) { this.commands = new Queue<ACommand>(); }
 
             foreach(ACommand command in commandsToRead) { this.commands.Enqueue(command); }
 
             return this.commands;
         }
-
-        
     }
 }

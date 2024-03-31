@@ -1,5 +1,11 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Infrastructure.Configuration;
+using Microsoft.Extensions.Configuration;
+using Domain.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Domain.Core.Interfaces;
+using Infrastructure.Crosscutting.Settings;
+using System.Reflection;
 
 /** Gaming Application README
 
@@ -18,16 +24,20 @@ Console.WriteLine("Loading all applications");
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 builder.Services.LoadAllGames();
 
-IHost host = builder.Build();   
+Console.WriteLine("Reading Settings...");
 
-Console.WriteLine("Reading Settings.");
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-//TODO: Read Settings
+builder.Services.Configure<TurtleChallengeSettings>(
+    builder.Configuration.GetSection(TurtleChallengeSettings.APP_SETTING_KEY));
 
+using IHost host = builder.Build();
 
-//Start the Game
+//Get All Services of type Game Running
 
-//Do this configurable
-Console.WriteLine("Reading by default: TurtleChallenge");
+foreach (IGame service in host.Services.GetServices(typeof(IGame)))
+{
+    service.Start();
+}
 
 await host.RunAsync();

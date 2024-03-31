@@ -6,7 +6,8 @@
     /// </summary>
     public class GameState
     {
-        public required AElement[][] GameBoard { get; set; }
+        public required int XMax { get; set; }
+        public required int YMax { get; set; }
         public required Turtle Turtle { get; set; }
         public required Exit Exit { get; set; }
         public required IEnumerable<Mine> ListMine { get; set; }

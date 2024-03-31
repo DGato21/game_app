@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.TurtleChallenge;
 
-namespace Infrastructure.Crosscutting.Factory
+namespace Domain.Core.Factory
 {
     public static class CommandFactory
     {

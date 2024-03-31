@@ -1,37 +1,8 @@
 {
   //Matrix (M x N): Rows x Columns
-  "boardSize": "5x4",
-  "board": {
-    [
-      [],
-      [],
-      [ "T" ],
-      [],
-    ],
-    [
-      [],
-      [ "M" ],
-      [],
-      [ "M" ],
-    ],
-    [
-      [],
-      [],
-      [ "M" ],
-      [],
-    ],
-    [
-      [],
-      [ "E" ],
-      [],
-      [],
-    ],
-    [
-      [],
-      [],
-      [],
-      [],
-    ]
-  },
+  "boardSize": "6x5",
+  "turtle": "1x1",
+  "mines": [ "2x1", "4x3", "3x4" ],
+  "exit": "5x4",
   "turtleDirection": "NORTH"
 }
