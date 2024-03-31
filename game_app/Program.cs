@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
-using Domain.Core;
 using Microsoft.Extensions.DependencyInjection;
+
 using Domain.Core.Interfaces;
 using Infrastructure.Crosscutting.Settings;
-using System.Reflection;
+using Infrastructure.Configuration;
 
 /** Gaming Application README
 
@@ -34,7 +33,6 @@ builder.Services.Configure<TurtleChallengeSettings>(
 using IHost host = builder.Build();
 
 //Get All Services of type Game Running
-
 foreach (IGame service in host.Services.GetServices(typeof(IGame)))
 {
     service.Start();

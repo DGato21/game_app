@@ -5,6 +5,7 @@ using Domain.Core.Validators;
 using Domain.Entities.TurtleChallenge;
 using Infrastructure.Crosscutting;
 using Infrastructure.Crosscutting.Settings;
+
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -12,7 +13,9 @@ namespace Domain.Core
 {
     public class TurtleGame : AGame, ITurtleGame
     {
+        private readonly Guid guid;
         private readonly TurtleChallengeSettings configuration;
+
         public GameState gameState;
         public Queue<ACommand> commands;
 
@@ -21,16 +24,20 @@ namespace Domain.Core
             this.configuration = configuration.Value;
             this.gameState = LoadGame();
             this.commands = LoadCommands();
+
+            this.guid = Guid.NewGuid();
         }
 
         public async override void Start()
         {
+            Console.WriteLine(GetOutputMessage("Start Game"));
+
             if (this.commands.Any())
             {
                 while (this.commands.Any()) { ExecuteCommand(); }
             }
 
-            Console.WriteLine("Game End");
+            Console.WriteLine(GetOutputMessage("End of Game"));
         }
 
         public void ExecuteCommand()
@@ -77,5 +84,7 @@ namespace Domain.Core
 
             return this.commands;
         }
+
+        private string GetOutputMessage(string action) => $"TurtleGame [Instance:{this.guid}]: {action}";
     }
 }
