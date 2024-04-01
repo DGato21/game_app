@@ -2,7 +2,7 @@
   //Matrix (M x N): Rows x Columns
   "boardSize": "6x5",
   "turtle": "1x1",
-  "mines": [ "2x1", "4x3", "3x4" ],
+  "mines": [ "2x1", "4x3", "3x3" ],
   "exit": "5x4",
   "turtleDirection": "NORTH"
 }

@@ -23,6 +23,6 @@ namespace Infrastructure.Crosscutting.Settings
 
     public class MovesSettings
     {
-        public string moves { get; set; }
+        public IEnumerable<string> moves { get; set; }
     }
 }

@@ -16,9 +16,14 @@ namespace Domain.Entities.TurtleChallenge
 
             int currentpositionIndex = ROTATIONS_ORDER.IndexOf(turtle.Direction);
             int nextIndex = currentpositionIndex + 1;
-            if (nextIndex + 1 >= ROTATIONS_ORDER.Count) { nextIndex = 0; }
+            if (nextIndex >= ROTATIONS_ORDER.Count) { nextIndex = 0; }
 
             turtle.Direction = ROTATIONS_ORDER[nextIndex];
+        }
+
+        public override string ToString()
+        {
+            return $"- [CommandRotate]\n";
         }
     }
 }

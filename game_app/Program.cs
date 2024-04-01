@@ -16,6 +16,8 @@ March 2024
 
 **/
 
+//TODO: Read files from Arg
+
 Console.WriteLine("Welcome to Gaming Console Application");
 
 Console.WriteLine("Loading all applications");
@@ -35,6 +37,7 @@ using IHost host = builder.Build();
 //Get All Services of type Game Running
 foreach (IGame service in host.Services.GetServices(typeof(IGame)))
 {
+    Console.WriteLine($"\nStarting {service.GetType()} [{service.GetInstanceId()}]\n");
     service.Start();
 }
 

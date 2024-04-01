@@ -1,4 +1,7 @@
-﻿namespace Domain.Entities.TurtleChallenge
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+
+namespace Domain.Entities.TurtleChallenge
 {
     /// <summary>
     /// GameState class that can store the current state of an execution.
@@ -16,5 +19,33 @@
         /// Next command to be execute on this state
         /// </summary>
         public ACommand? CommandToExecute { get; set; } = null;
+
+        //Easy way to clone
+        public GameState DeepClone()
+        {
+            string copyStr = JsonConvert.SerializeObject(this);
+
+            return JsonConvert.DeserializeObject<GameState>(copyStr);
+        }
+
+        public override string ToString()
+        {
+            string output = string.Empty;
+
+            if (this.CommandToExecute != null)
+            {
+                output += this.CommandToExecute.ToString();
+            }
+
+            output += $"- Turtle: {this.Turtle.Position.X},{this.Turtle.Position.Y} - {this.Turtle.Direction.ToString()}\n";
+
+            output += $"- Exit: {this.Exit.Position.X},{this.Exit.Position.Y}\n";
+
+            output += "- Mines:\n";
+            int i = 1;
+            foreach (var mine in ListMine) { output += $"--- Mine{i++}: {mine.Position.X},{mine.Position.Y}\n"; }
+
+            return output;
+        }
     }
 }

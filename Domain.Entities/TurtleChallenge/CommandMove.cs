@@ -24,5 +24,10 @@
                     break;
             }
         }
+
+        public override string ToString()
+        {
+            return $"- [CommandMove]\n";
+        }
     }
 }
