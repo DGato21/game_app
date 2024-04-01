@@ -2,6 +2,7 @@
 
 namespace Domain.Core.Factory
 {
+    //DEPRECATED
     /// <summary>
     /// Not Used
     /// </summary>

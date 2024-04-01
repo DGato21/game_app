@@ -24,6 +24,9 @@
     <None Update="settings\turtleChallenge\game-settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="settings\turtleChallenge\movesV2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="settings\turtleChallenge\moves.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

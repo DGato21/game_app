@@ -16,21 +16,43 @@ March 2024
 
 **/
 
-//TODO: Read files from Arg
+/*
+ * - Retirar logs
+ * - Colocar constraints de tamanho no board?
+ * - Rever codigo
+ */
 
 Console.WriteLine("Welcome to Gaming Console Application");
 
-Console.WriteLine("Loading all applications");
-
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
-builder.Services.LoadAllGames();
 
 Console.WriteLine("Reading Settings...");
 
+#region Settings Section
+
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-builder.Services.Configure<TurtleChallengeSettings>(
-    builder.Configuration.GetSection(TurtleChallengeSettings.APP_SETTING_KEY));
+var defaultSettings = builder.Configuration.GetSection(TurtleChallengeSettings.APP_SETTING_KEY);
+
+string? boardSettings = null, movesSettings = null;
+if (args != null && args.Any() && args.Length == 2)
+{
+    boardSettings = args[0];
+    movesSettings = args[1];
+
+    defaultSettings["Configurations:GameSettings"] = boardSettings;
+    defaultSettings["Configurations:CommandSettings"] = movesSettings;
+}
+else
+{
+    Console.WriteLine("Default settings read from appsettings.json");
+}
+builder.Services.Configure<TurtleChallengeSettings>(defaultSettings);
+
+#endregion
+
+Console.WriteLine("Loading all applications");
+builder.Services.LoadAllGames();
 
 using IHost host = builder.Build();
 
