@@ -22,11 +22,13 @@ March 2024
  * - Rever codigo
  */
 
-Console.WriteLine("Welcome to Gaming Console Application");
+Console.WriteLine();
+
+//Console.WriteLine("Welcome to Gaming Console Application");
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-Console.WriteLine("Reading Settings...");
+//Console.WriteLine("Reading Settings...");
 
 #region Settings Section
 
@@ -45,13 +47,13 @@ if (args != null && args.Any() && args.Length == 2)
 }
 else
 {
-    Console.WriteLine("Default settings read from appsettings.json");
+    //Console.WriteLine("Default settings read from appsettings.json");
 }
 builder.Services.Configure<TurtleChallengeSettings>(defaultSettings);
 
 #endregion
 
-Console.WriteLine("Loading all applications");
+//Console.WriteLine("Loading all applications");
 builder.Services.LoadAllGames();
 
 using IHost host = builder.Build();
@@ -59,8 +61,9 @@ using IHost host = builder.Build();
 //Get All Services of type Game Running
 foreach (IGame service in host.Services.GetServices(typeof(IGame)))
 {
-    Console.WriteLine($"\nStarting {service.GetType()} [{service.GetInstanceId()}]\n");
+    //Console.WriteLine($"\nStarting {service.GetType()} [{service.GetInstanceId()}]\n");
     service.Start();
 }
 
+Console.WriteLine();
 await host.RunAsync();

@@ -2,7 +2,7 @@
   "profiles": {
     "game_app": {
       "commandName": "Project",
-      "commandLineArgs": "settings/turtleChallenge/game-settings.json settings/turtleChallenge/movesV2.json "
+      "commandLineArgs": "settings/turtleChallenge/game-settings.json settings/turtleChallenge/moves.json "
     }
   }
 }

@@ -4,5 +4,6 @@
   "turtle": "1x1",
   "mines": [ "2x1", "4x3", "3x3" ],
   "exit": "5x4",
-  "turtleDirection": "NORTH"
+  "turtleDirection": "NORTH",
+  "maxSize": 1000
 }

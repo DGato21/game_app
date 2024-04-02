@@ -14,6 +14,8 @@ namespace Domain.Entities.TurtleChallenge
         public required Turtle Turtle { get; set; }
         public required Exit Exit { get; set; }
         public required IEnumerable<Mine> ListMine { get; set; }
+        public required bool GameFinish { get; set; } = false;
+        public int SPEC_CONSTRAINT_MAX_SIZE { get; set; } = 999999999;
 
         /// <summary>
         /// Next command to be execute on this state

@@ -36,9 +36,9 @@ namespace Domain.Core
 
             if (valid)
             {
-                Console.WriteLine(GetOutputMessage("Start Game"));
+                WriteOutputMessage("Start Game");
 
-                Console.WriteLine(GetOutputMessage($"Initial State of Game:\n{gameState.ToString()}"));
+                WriteOutputMessage($"Initial State of Game:\n{gameState.ToString()}");
 
                 if (this.sequences.Any())
                 {
@@ -46,8 +46,12 @@ namespace Domain.Core
 
                     while (this.sequences.Any())
                     {
-                        Console.WriteLine(GetOutputMessage($"------------ Sequence {seqNr} START ------------"));
+                        WriteOutputMessage($"------------ Sequence {seqNr} START ------------");
+                        WriteOutputMessage($"Sequence {seqNr}: ", "RELEASE", false);
                         var commands = this.sequences.Dequeue();
+
+                        int totalCommands = commands.Count;
+                        int commandNr = 0;
 
                         while (commands.Any())
                         {
@@ -55,16 +59,25 @@ namespace Domain.Core
                             var commandSuccess = ExecuteCommand(command);
 
                             if (!commandSuccess)
-                                break;
-
-                            if (this.gameState.Turtle.Position.Equals(this.gameState.Exit.Position))
                             {
-                                Console.WriteLine(GetOutputMessage($"Success!"));
+                                this.gameState.GameFinish = true;
                                 break;
                             }
+                            else if (this.gameState.Turtle.Position.Equals(this.gameState.Exit.Position))
+                            {
+                                this.gameState.GameFinish = true;
+                                WriteOutputMessage($"Success!", "RELEASE");
+                                break;
+                            }
+                            else if (commandNr+1 >= totalCommands) //Means last command
+                            {
+                                this.gameState.GameFinish = true;
+                                WriteOutputMessage($"Still in danger!", "RELEASE");
+                            }
+                            commandNr = commandNr + 1;
                         }
 
-                        Console.WriteLine(GetOutputMessage($"------------ Sequence {seqNr} END ------------"));
+                        WriteOutputMessage($"------------ Sequence {seqNr} END ------------");
 
                         seqNr++;
                         ResetGameState();
@@ -74,13 +87,13 @@ namespace Domain.Core
                 }
             }
 
-            Console.WriteLine(GetOutputMessage("End of Game"));
+            WriteOutputMessage("End of Game");
         }
 
         private void ResetGameState() 
         {
             this.gameState = this.initialState.DeepClone();
-            Console.WriteLine(GetOutputMessage("Reset Board to start new sequence."));
+            WriteOutputMessage("Reset Board to start new sequence.");
         }
 
         public bool ExecuteCommand(ACommand command)
@@ -100,7 +113,7 @@ namespace Domain.Core
                 //If everything okay
                 this.gameState = newGameState;
 
-                Console.WriteLine(GetOutputMessage(this.gameState.ToString()));
+                WriteOutputMessage(this.gameState.ToString());
             }
 
             return valid;
@@ -137,8 +150,6 @@ namespace Domain.Core
 
             return this.sequences;
         }
-
-        private string GetOutputMessage(string action) => $"{this.GetType()} [{this.GetInstanceId()}]: \n -> {action}\n";
     
         private bool ValidateState()
         {
@@ -149,18 +160,18 @@ namespace Domain.Core
             var result = validator.Validate(this.gameState);
             if (!result.IsValid)
             {
-                Console.Write(GetOutputMessage($"Invalid State in initialization or after command:\n{string.Join(";", result.Errors.Select(x => x.ErrorMessage))}"));
+                WriteOutputMessage($"Invalid State in initialization or after command:{string.Join(";\n", result.Errors.Select(x => x.ErrorMessage))}", "RELEASE");
                 
                 if (this.gameState.CommandToExecute != null)
                 {
-                    Console.Write($"Invalid Command is: {this.gameState.CommandToExecute.ToString()}");
+                    WriteOutputMessage($"Invalid Command is: {this.gameState.CommandToExecute.ToString()}");
                 }
             }
             else
             {
                 if (this.gameState.ListMine.Where(x=> x.Position.Equals(this.gameState.Turtle.Position)).Any())
                 {
-                    Console.Write(GetOutputMessage($"Mine hit!"));
+                    WriteOutputMessage($"Mine hit!", "RELEASE");
                 }
                 else
                 {
@@ -168,6 +179,21 @@ namespace Domain.Core
                 }
             }
             return validState;
+        }
+
+        public override void WriteOutputMessage(string action, string messageEnv = "DEBUG", bool breakLine = true)
+        {
+            if (this.configuration.Environment.Equals("DEBUG", StringComparison.InvariantCultureIgnoreCase) 
+                || this.configuration.Environment.Equals(messageEnv, StringComparison.InvariantCultureIgnoreCase))
+            {
+                //string output = $"{this.GetType()} [{this.GetInstanceId()}]: \n -> {action}\n";
+                string output = $"{action}";
+
+                if (breakLine) 
+                    Console.WriteLine(output);
+                else
+                    Console.Write(output);
+            }
         }
     }
 }

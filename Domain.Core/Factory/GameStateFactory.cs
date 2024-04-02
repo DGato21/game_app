@@ -18,10 +18,11 @@ namespace Domain.Core.Factory
                 Turtle = new Turtle(getPosition(settings.turtle).X, getPosition(settings.turtle).Y, settings.turtleDirection),
                 Exit = new Exit(getPosition(settings.exit).X, getPosition(settings.exit).Y),
                 ListMine = settings.mines.Select(x => new Mine(getPosition(x).X, getPosition(x).Y)),
-                CommandToExecute = null
-            };
+                CommandToExecute = null,
+                GameFinish = false,
 
-            //TODO: Validators -> Position of each element; No override; inside board game
+                SPEC_CONSTRAINT_MAX_SIZE = settings.maxSize.GetValueOrDefault()
+            };
 
             return gameState;
         }
