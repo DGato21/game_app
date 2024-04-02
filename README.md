@@ -4,6 +4,8 @@ Game Application based in TurtleChallenge.
 
 This application was created with the main purprose to respond to the TurtleChallenge but to be prepared to be used to quickly create other game or challenges with abstract and generic uses of Game concepts that can be shared across all games.
 
+Author: Diogo Gato Rebimba (github: DGato21)
+
 ## Constraints and Assumptions
 
 A default settings is read by default if no arguments are provided to the application.
